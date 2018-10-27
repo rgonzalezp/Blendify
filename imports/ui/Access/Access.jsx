@@ -1,0 +1,58 @@
+import React, { Component } from 'react';
+import { Template } from 'meteor/templating';
+import { Blaze } from 'meteor/blaze';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { withTracker } from 'meteor/react-meteor-data';
+import PropTypes from 'prop-types';
+import './Access.css';
+
+
+class Access extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    if (this.props.user) {
+      console.log('Redirecting...');
+      FlowRouter.go('home');
+    }
+    // Use Meteor Blaze to render login buttons
+    this.view = Blaze.render(Template.atForm, this.login);
+  }
+
+  componentDidUpdate() {
+    if (this.props.user) {
+      console.log('Redirecting...');
+      FlowRouter.go('home');
+    }
+  }
+
+  componentWillUnmount() {
+    // Clean up Blaze view
+    Blaze.remove(this.view);
+  }
+  render() {
+    // Just render a placeholder container that will be filled in
+    return (
+      <div className='access-container'>
+        <span 
+          className='access-form'
+          ref={login => this.login = login} 
+        />
+      </div>
+    );
+  }
+}
+
+Access.propTypes = {
+  user: PropTypes.string
+};
+
+export default withTracker(() => {
+  return {
+    user: Meteor.userId()
+  };
+})(Access);

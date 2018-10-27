@@ -1,22 +1,70 @@
-import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
+import React from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { mount, withOptions } from 'react-mounter';
+import App from '../imports/ui/App.jsx';
+import Home from '../imports/ui/Home/Home.jsx';
+import CreateBlend from '../imports/ui/CreateBlend/CreateBlend.jsx';
+import JoinBlend from '../imports/ui/JoinBlend/JoinBlend.jsx';
+import Access from '../imports/ui/Access/Access.jsx';
+import registerServiceWorker from './registerServiceWorker';
 
+//Display main.html as the served html
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
-});
+//Configure account settings and strings
+import './accountConfiguration';
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
+//Use custom mount function to mount to 'app' instead of 'react-root'
+mount = withOptions({
+  rootId: 'app'
+}, mount);
+
+
+//Router will mount React app and change it's contents accordingly
+FlowRouter.route('/', {
+  name: 'home',
+  action() {
+    mount(App, {
+      main: <Home />,
+    });
   },
 });
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
+FlowRouter.route('/create', {
+  name: 'create',
+  action() {
+    mount(App, {
+      main: <CreateBlend />,
+    });
   },
 });
+
+FlowRouter.route('/join', {
+  name: 'join',
+  action() {
+    mount(App, {
+      main: <JoinBlend />,
+    });
+  },
+});
+
+FlowRouter.route('/access', {
+  name: 'access',
+  action() {
+    mount(App, {
+      main: <Access />,
+    });
+  },
+});
+
+FlowRouter.notFound = {
+  action() {
+    mount(App, {
+      main: (() => {
+        return <h1 />;
+      })()
+    });
+  }
+};
+
+registerServiceWorker();

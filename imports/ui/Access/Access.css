@@ -1,0 +1,11 @@
+.access-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.access-form{
+  width: 48vw;
+  height: 400px;
+  min-width: 336px;  
+}
