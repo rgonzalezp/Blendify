@@ -24,7 +24,7 @@ if(Meteor.isServer) {
 
 Meteor.methods({
   'rooms.create'(title, ts) {
-    if(!Meteor.userId()) throw new Meteor.Error('Not authorized');
+    if(!Meteor.userId()) return new Meteor.Error('Not authorized');
     let owner = Meteor.user().profile.id;
     let code = makecode();
     while(Rooms.findOne({code})) code = makecode();
@@ -39,7 +39,7 @@ Meteor.methods({
     return code;
   },
   'rooms.addSongs'(code, songslist) {
-    if(!Meteor.userId()) throw new Meteor.Error('Not authorized');
+    if(!Meteor.userId()) return new Meteor.Error('Not authorized');
     let user = Meteor.user().profile.id;
     let songs = songslist.map(s => {
       return{song: s, user};
@@ -49,7 +49,7 @@ Meteor.methods({
     });
   },
   'rooms.addContributor'(code) {
-    if(!Meteor.userId()) throw new Meteor.Error('Not authorized');
+    if(!Meteor.userId()) return new Meteor.Error('Not authorized');
     Rooms.update({code}, {
       $push: {contributors: Meteor.user().profile.id}
     });

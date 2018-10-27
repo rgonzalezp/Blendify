@@ -8,8 +8,6 @@ class Home extends React.Component{
 
   constructor(props){
     super(props);
-    console.log('prdasd');
-    
   }
 
   render(){
