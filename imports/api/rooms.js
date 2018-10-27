@@ -10,7 +10,7 @@ const makecode = () => {
   for (let i = 0; i < 2; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-  let number = Math.random()%1000;
+  let number = Math.floor(Math.random()*1000);
   if(number<10) number = '00'+number;
   else if(number<100) number = '0'+number;
   return text+number;
@@ -36,6 +36,7 @@ Meteor.methods({
       songs: [],
       timestamp: ts,
     });
+    return code;
   },
   'rooms.addSongs'(code, songslist) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
