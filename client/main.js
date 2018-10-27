@@ -5,14 +5,11 @@ import App from '../imports/ui/App.jsx';
 import Home from '../imports/ui/Home/Home.jsx';
 import CreateBlend from '../imports/ui/CreateBlend/CreateBlend.jsx';
 import JoinBlend from '../imports/ui/JoinBlend/JoinBlend.jsx';
-import Access from '../imports/ui/Access/Access.jsx';
+import NotFound from '../imports/ui/NotFound/NotFound.jsx';
 import registerServiceWorker from './registerServiceWorker';
 
 //Display main.html as the served html
 import './main.html';
-
-//Configure account settings and strings
-import './accountConfiguration';
 
 //Use custom mount function to mount to 'app' instead of 'react-root'
 mount = withOptions({
@@ -48,21 +45,10 @@ FlowRouter.route('/join', {
   },
 });
 
-FlowRouter.route('/access', {
-  name: 'access',
-  action() {
-    mount(App, {
-      main: <Access />,
-    });
-  },
-});
-
 FlowRouter.notFound = {
   action() {
     mount(App, {
-      main: (() => {
-        return <h1 />;
-      })()
+      main: <NotFound />
     });
   }
 };

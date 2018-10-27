@@ -8,12 +8,18 @@ import './App.css';
 
 class App extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  logOut() {
-    AccountsTemplates.logout();
+  signIn() {
+    var options = {
+      showDialog: true, // Whether or not to force the user to approve the app again if they’ve already done so.
+      requestPermissions: ['user-read-email'], // TODO define Spotify access scopes
+    };
+    Meteor.loginWithSpotify(options, function (err) {
+      console.log(err || 'No error');
+    });
   }
 
   render() {
@@ -21,18 +27,19 @@ class App extends React.Component {
       <div className='app-container'>
         <nav className='app-topbar'>
           <div className='title-logo-container'>
-            <a href='/'><img src="/assets/logo.png" alt="Logo"/></a>
+            <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
             <div>
               <h1>Blendify</h1>
               <h2>Fast and customizable shared Spotify playlists</h2>
             </div>
           </div>
           {this.props.user ?
-            <button onClick={() => this.logOut()}>Cerrar sesión</button> :
+            <button onClick={() => Meteor.logout()}>Cerrar sesión</button> :
             FlowRouter.getRouteName() === 'access' ?
               <button onClick={() => FlowRouter.go('home')}>Volver al inicio</button> :
-              <button onClick={() => FlowRouter.go('access')}>Iniciar sesión</button>}
+              <button onClick={() => this.signIn()}>Iniciar sesión</button>}
         </nav>
+        {this.props.main}
       </div>
     );
   }
