@@ -10,10 +10,17 @@ class Home extends React.Component{
     super(props);
   }
 
+  test(){
+    Meteor.call('users.removeuser', 'colmanro', cbk => {
+      console.log(cbk);
+      
+    });
+  }
+
   render(){
     return(
       <div>
-        {JSON.stringify(this.props.user, null, 2)}
+        <button onClick={() => this.test()}>Test method</button>
       </div>
     );
   }
