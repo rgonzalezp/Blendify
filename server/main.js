@@ -1,5 +1,6 @@
 /*global ServiceConfiguration, process*/
 import { Meteor } from 'meteor/meteor';
+import Spotify from './Spotify';
 
 Meteor.startup(() => {
   // code to run on server at startup  
