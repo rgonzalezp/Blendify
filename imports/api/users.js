@@ -12,7 +12,7 @@ Meteor.methods({
     if (!Meteor.users.findOne({ 'profile.id': username })) {
       return new Meteor.Error('The user does not exists');
     }
-    Meteor.users.update({ 'profile.id': username }, { profiles: undefined });
+    Meteor.users.update({ 'profile.id': username }, {});
   },
   'users.getTopTracks'() {
     console.log('entro');
@@ -20,5 +20,20 @@ Meteor.methods({
     if (!Meteor.isServer) return new Meteor.Error('Unauthorized');
 
     return Spotify.getTopTracks(Meteor.user().services.spotify.accessToken);
+  },
+  'users.createPlaylist'(name, description) {
+    if (!Meteor.userId()) return new Meteor.Error('Unauthorized');
+    if (!Meteor.isServer) return new Meteor.Error('Unauthorized');
+
+    const user = Meteor.user();
+    Spotify.createPlaylist(user.services.spotify.accessToken, user.profile.id, name, description)
+      .then((data) => {
+        console.log('yes');
+        console.log(data);
+      })
+      .catch(err => {
+        console.log('yaper');
+        console.log(err);
+      });
   }
 });

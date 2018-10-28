@@ -20,23 +20,31 @@ class Home extends React.Component{
   }
 
   test2() {
-    Meteor.call('rooms.create', 'prueba definitiva', Date.now(), (err, res) => {
-      console.log('probando...');
+    Meteor.call('users.createPlaylist', 'mi playlist', 'mi descripción', (err, res) => {/*
+      console.log('probando1');
       console.log(err);
+      console.log(res);
       if(!err) {
-        Meteor.call('users.getTopTracks', (err, res2) => {
+        console.log('yessss');
+        Meteor.call('rooms.create', 'mi playlist', Date.now(), 'mi descripción', (err, res) => {
+          console.log('probando...');
           console.log(err);
           if(!err) {
-            Meteor.call('rooms.addSongs', res, res2.items, (err, res) => {
+            Meteor.call('users.getTopTracks', (err, res2) => {
               console.log(err);
               if(!err) {
-                console.log('victoria!!!');
-                console.log(res);
+                Meteor.call('rooms.addSongs', res, res2.items, (err, res) => {
+                  console.log(err);
+                  if(!err) {
+                    console.log('victoria!!!');
+                    console.log(res);
+                  }
+                });
               }
             });
           }
         });
-      }
+      }*/
     });
   }
 
