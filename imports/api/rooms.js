@@ -19,32 +19,35 @@ const makecode = () => {
 
 if(Meteor.isServer) {
   Meteor.publish('rooms', (user) => {
-    return Rooms.find({contributors: user});
+    return Rooms.find({'contributors.id': user});
   });
 }
 
 Meteor.methods({
-  'rooms.create'(name, ts, description) {
+  'rooms.create'(playlist) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
-    let owner = Meteor.user().profile.id;
+    let owner = Meteor.user().profile;
+    if(owner.id !== playlist.owner.id) return new Meteor.Error('Not authorized');
     let code = makecode();
     while(Rooms.findOne({code})) code = makecode();
     Rooms.insert({
-      name,
+      name: playlist.name,
       code,
-      description,
+      description: playlist.description,
+      id: playlist.id,
       owner,
-      contributors: [{name: owner}],
-      songs: [],
-      timestamp: ts,
+      contributors: [owner],
+      tracks: [],
+      images: playlist.images,
+      timestamp: Date.now(),
     });
     return code;
   },
   'rooms.addSongs'(code, songslist) {
     let user = Meteor.user();
     if(!user) return new Meteor.Error('Not authorized');
-    let songs = songslist.map(s => {
-      return{song: s, user: user.profile.id};
+    let tracks = songslist.map(s => {
+      return{track: s, user: user.profile};
     });
     let uris = songslist.map(s => {
       return s.uri;
@@ -54,25 +57,25 @@ Meteor.methods({
     Spotify.addTracks(user.services.spotify.accessToken, room.id, uris)
       .then(() => {
         Rooms.update({code}, {
-          $push: {songs: {$each: songs}}
+          $push: {tracks: {$each: tracks}}
         });
       })
-      .catch((err) => console.log('yaper prro'));
+      .catch((err) => console.log(err));
   },
   'rooms.addSongs2'(code, songslist) {
     let user = Meteor.user();
     if(!user) return new Meteor.Error('Not authorized');
-    let songs = songslist.map(s => {
-      return{song: s, user: user.profile.id};
+    let tracks = songslist.map(s => {
+      return{track: s, user: user.profile};
     });
     Rooms.update({code}, {
-      $push: {songs: {$each: songs}}
+      $push: {tracks: {$each: tracks}}
     });
   },
   'rooms.addContributor'(code) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
     Rooms.update({code}, {
-      $push: {contributors: Meteor.user().profile.id}
+      $push: {contributors: Meteor.user().profile}
     });
   },
   'rooms.find'(code) {

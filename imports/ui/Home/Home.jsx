@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import RecentBlend from './RecentBlend/RecentBlend.jsx';
+import { Rooms } from '../../api/rooms.js';
 class Home extends React.Component {
 
   constructor(props) {
@@ -20,13 +21,14 @@ class Home extends React.Component {
   }
 
   test2() {
-    Meteor.call('users.createPlaylist', 'mi playlist', 'mi descripción', () => {/*
-      console.log('probando1');
+    Meteor.call('users.createPlaylist', 'mi playlist 5', 'mi descripción 5', (err, res) => {
+      console.log('a');
       console.log(err);
       console.log(res);
+      
       if(!err) {
         console.log('yessss');
-        Meteor.call('rooms.create', 'mi playlist', Date.now(), 'mi descripción', (err, res) => {
+        Meteor.call('rooms.create', res, (err, res) => {
           console.log('probando...');
           console.log(err);
           if(!err) {
@@ -44,7 +46,7 @@ class Home extends React.Component {
             });
           }
         });
-      }*/
+      }
     });
   }
 
@@ -97,7 +99,13 @@ Home.propTypes = {
 export default withTracker(() => {
   // props here will have `main`, passed from the router
   // anything we return from this function will be *added* to it
+  const user = Meteor.user();
+  if(user)
+    Meteor.subscribe('rooms', user.profile.id);
+  const a = Rooms.find({}, {sort: {timestamp:-1}, limit: 5}).fetch();
+  console.log(a);
   return {
-    user: Meteor.user()
+    user,
+    recent: a,
   };
 })(Home);

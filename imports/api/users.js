@@ -26,14 +26,6 @@ Meteor.methods({
     if (!Meteor.isServer) return new Meteor.Error('Unauthorized');
 
     const user = Meteor.user();
-    Spotify.createPlaylist(user.services.spotify.accessToken, user.profile.id, name, description)
-      .then((data) => {
-        console.log('yes');
-        console.log(data);
-      })
-      .catch(err => {
-        console.log('yaper');
-        console.log(err);
-      });
+    return Spotify.createPlaylist(user.services.spotify.accessToken, user.profile.id, name, description);
   }
 });

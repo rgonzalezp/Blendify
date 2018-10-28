@@ -6,11 +6,12 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 class JoinBlend extends React.Component{
 
   getImageSrc(blend){
-    for(const image of blend.images){
-      if(image.width === 300){
-        return image.url;
+    if(blend.image)
+      for(const image of blend.images){
+        if(image.width === 300){
+          return image.url;
+        }
       }
-    }
   }
 
   render(){
