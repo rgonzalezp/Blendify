@@ -9,18 +9,41 @@ class Home extends React.Component{
   constructor(props){
     super(props);
   }
-
+  
   test(){
-    Meteor.call('users.removeuser', 'colmanro', cbk => {
-      console.log(cbk);
+    Meteor.call('users.getTopTracks', (err, res) => {
+      console.log('probando...');
+      console.log(err);
+      if(!err) console.log(res.items);
       
+    });
+  }
+
+  test2() {
+    Meteor.call('rooms.create', 'prueba definitiva', Date.now(), (err, res) => {
+      console.log('probando...');
+      console.log(err);
+      if(!err) {
+        Meteor.call('users.getTopTracks', (err, res2) => {
+          console.log(err);
+          if(!err) {
+            Meteor.call('rooms.addSongs', res, res2.items, (err, res) => {
+              console.log(err);
+              if(!err) {
+                console.log('victoria!!!');
+                console.log(res);
+              }
+            });
+          }
+        });
+      }
     });
   }
 
   render(){
     return(
       <div>
-        <button onClick={() => this.test()}>Test method</button>
+        <button onClick={() => this.test2()}>Test method</button>
       </div>
     );
   }

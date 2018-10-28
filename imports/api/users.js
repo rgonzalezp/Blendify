@@ -1,30 +1,24 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 import Spotify from './Spotify';
-
-export const Users = new Mongo.Collection('users');
 
 if (Meteor.isServer) {
   Meteor.publish('users', username => {
-    return Users.find({ 'profile.id': username }, { profile: 1 });
+    return Meteor.users.find({ 'profile.id': username }, { profile: 1 });
   });
 }
 
 Meteor.methods({
-  'users.removeuser'(username) {
-    if (!Users.findOne({ 'profile.id': username })) {
+  'users.removeUser'(username) {
+    if (!Meteor.users.findOne({ 'profile.id': username })) {
       return new Meteor.Error('The user does not exists');
     }
-    Users.update({ 'profile.id': username }, { profiles: undefined });
+    Meteor.users.update({ 'profile.id': username }, { profiles: undefined });
   },
-  'users.getTopTracks'(callback) {
+  'users.getTopTracks'() {
     console.log('entro');
-    
-    if (!Meteor.user()) return new Meteor.Error('Unauthorized');
+    if (!Meteor.userId()) return new Meteor.Error('Unauthorized');
     if (!Meteor.isServer) return new Meteor.Error('Unauthorized');
 
-    Spotify.getTopTracks(Meteor.user().services.spotify.access_token)
-      .then(tracks => callback(null /*No error*/, tracks))
-      .catch(err => callback(err));
+    return Spotify.getTopTracks(Meteor.user().services.spotify.accessToken);
   }
 });
