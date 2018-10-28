@@ -18,8 +18,16 @@ class JoinBlend extends React.Component {
     return !re.test(this.state.code);
   }
   
-  submitJoin(){
+  submitJoin(event){
+    event.preventDefault();
 
+    Meteor.call('rooms.addContributor', this.state.code, (err, res) => {
+      if(err) {
+        alert(err);
+        return;
+      }
+      console.log(res);
+    });
   }
 
   render() {
@@ -28,7 +36,7 @@ class JoinBlend extends React.Component {
         <h3>
           Join blend
         </h3>
-        <form onSubmit={() => this.submitJoin()}>
+        <form onSubmit={(e) => this.submitJoin(e)}>
           <input
             type="text"
             placeholder="TS443"

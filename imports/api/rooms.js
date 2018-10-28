@@ -21,6 +21,9 @@ if(Meteor.isServer) {
   Meteor.publish('rooms', (user) => {
     return Rooms.find({'contributors.id': user});
   });
+  Meteor.publish('singleRoom', code => {
+    return Rooms.find({code});
+  });
 }
 
 Meteor.methods({
@@ -65,6 +68,9 @@ Meteor.methods({
   'rooms.addSongs2'(code, songslist) {
     let user = Meteor.user();
     if(!user) return new Meteor.Error('Not authorized');
+    if(!Rooms.findOne({code, 'contributors.id': user.profile.id})) {
+      return new Meteor.Error('Not authorized');
+    }
     let tracks = songslist.map(s => {
       return{track: s, user: user.profile};
     });
@@ -74,11 +80,25 @@ Meteor.methods({
   },
   'rooms.addContributor'(code) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
-    Rooms.update({code}, {
-      $push: {contributors: Meteor.user().profile}
-    });
+    const user = Meteor.user();
+    if(!Rooms.findOne({code, 'contributors.id': user.profile.id})) {
+      Rooms.update({code}, {
+        $push: {contributors: user.profile}
+      });
+    }
   },
-  'rooms.find'(code) {
-    return Rooms.findOne({code});
+  'rooms.autoUpdateImageCover'(code) {
+    if(!Meteor.userId()) return new Meteor.Error('Not authorized');
+    const user = Meteor.user();
+    const room = Rooms.findOne({code, 'contributors.id': user.profile.id});
+    if(!room) return new Meteor.Error('Not authorized');
+    Spotify.getPlaylist(user.services.spotify.accessToken, room.id)
+      .then(res => {
+        Rooms.update({code}, {$set: {images: res.images}});
+      })
+      .catch(err => {
+        console.log('wat');
+        console.log(err);
+      });
   }
 });

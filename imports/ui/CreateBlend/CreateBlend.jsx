@@ -12,6 +12,20 @@ class CreateBlend extends React.Component {
     const desc = this.descInput.value;
 
     //Call corrected submit method
+    Meteor.call('users.createPlaylist', name, desc, (err, res) => {
+      if(err) {
+        alert(err);
+        return;
+      }
+      Meteor.call('rooms.create', res, (err, res) => {
+        if(err) {
+          alert(err);
+          return;
+        }
+        console.log(res);
+        FlowRouter.go('home');
+      });
+    });
   }
 
   render() {
@@ -20,7 +34,7 @@ class CreateBlend extends React.Component {
         <h3>
           Create blend
         </h3>
-        <form onSubmit={() => this.sumbitBlend()}>
+        <form onSubmit={(e) => this.sumbitBlend(e)}>
           <label>
             Nombre
             <input type="text" maxLength="100" ref={ref => this.nameInput = ref} />

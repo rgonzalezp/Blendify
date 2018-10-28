@@ -71,6 +71,12 @@ class Home extends React.Component {
     });
   }
 
+  test4() {
+    Meteor.call('rooms.autoUpdateImageCover', 'MS659', () => {
+
+    });
+  }
+
   render(){
     return(
       <div>
@@ -78,7 +84,7 @@ class Home extends React.Component {
         <div>
           <button onClick={() => FlowRouter.go('join')}>Join</button>
           <button onClick={() => FlowRouter.go('create')}>Create</button>
-          <button onClick={() => this.test2()}>Test method</button>
+          <button onClick={() => this.test4()}>Test method</button>
         </div>
         <h4>Recently joined</h4>
         <div>

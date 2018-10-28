@@ -97,6 +97,20 @@ Spotify.createPlaylist = (access_token, user_id, name, description) => {
   });
 };
 
+Spotify.getPlaylist = (access_token, playlist_id) => {// TODO: handle token expired
+  return new Promise((resolve, reject) => {
+    axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`
+      }
+    })
+      .then(response => resolve(response.data) /*Return the requested data*/)
+      .catch(err => reject(err));
+  });
+};
+
 Spotify.addTracks = (access_token, playlist_id, uris) => {// TODO: handle token expired
   return new Promise((resolve, reject) => {
     const body = {
