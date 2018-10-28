@@ -77,4 +77,41 @@ Spotify.refreshAccessToken = (userId=undefined) => {
   });
 };
 
+Spotify.createPlaylist = (access_token, user_id, name, description) => {  
+  const body = {
+    name,
+    description,
+    public: false,
+    collaborative: true
+  };
+  return new Promise((resolve, reject) => {
+    axios.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, body,{
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`
+      }
+    })
+      .then(response => resolve(response.data) /*Return the requested data*/)
+      .catch(err => reject(err));
+  });
+};
+
+Spotify.addTracks = (access_token, playlist_id, uris) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+      params: {
+        uris,
+      },
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`
+      }
+    })
+      .then(response => resolve(response.data) /*Return the requested data*/)
+      .catch(err => reject(err));
+  });
+};
+
 export default Spotify;

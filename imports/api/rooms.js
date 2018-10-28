@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import Spotify from './Spotify';
 
 export const Rooms = new Mongo.Collection('rooms');
 
@@ -23,14 +24,15 @@ if(Meteor.isServer) {
 }
 
 Meteor.methods({
-  'rooms.create'(title, ts) {
+  'rooms.create'(name, ts, description) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
     let owner = Meteor.user().profile.id;
     let code = makecode();
     while(Rooms.findOne({code})) code = makecode();
     Rooms.insert({
-      title,
+      name,
       code,
+      description,
       owner,
       contributors: [{name: owner}],
       songs: [],
@@ -39,14 +41,23 @@ Meteor.methods({
     return code;
   },
   'rooms.addSongs'(code, songslist) {
-    if(!Meteor.userId()) return new Meteor.Error('Not authorized');
-    let user = Meteor.user().profile.id;
+    let user = Meteor.user();
+    if(!user) return new Meteor.Error('Not authorized');
     let songs = songslist.map(s => {
-      return{song: s, user};
+      return{song: s, user: user.profile.id};
     });
-    Rooms.update({code}, {
-      $push: {songs: {$each: songs}}
+    let uris = songslist.map(s => {
+      return s.uri;
     });
+    const room = Rooms.findOne({code});
+    if(!room) return new Meteor.Error('The room does not exist');
+    Spotify.addTracks(user.services.spotify.accessToken, room.id, uris)
+      .then(() => {
+        Rooms.update({code}, {
+          $push: {songs: {$each: songs}}
+        });
+      })
+      .catch((err) => console.log('yaper prro'));
   },
   'rooms.addContributor'(code) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
