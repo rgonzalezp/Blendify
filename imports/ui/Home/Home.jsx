@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import RecentBlend from './RecentBlend/RecentBlend.jsx';
+class Home extends React.Component {
 
-class Home extends React.Component{
-
-  constructor(props){
+  constructor(props) {
     super(props);
   }
-  
-  test(){
+
+  test() {
     Meteor.call('users.getTopTracks', (err, res) => {
       console.log('probando...');
       console.log(err);
-      if(!err) console.log(res.items);
-      
+      if (!err) console.log(res.items);
+
     });
   }
 
@@ -23,13 +23,13 @@ class Home extends React.Component{
     Meteor.call('rooms.create', 'prueba definitiva', Date.now(), (err, res) => {
       console.log('probando...');
       console.log(err);
-      if(!err) {
+      if (!err) {
         Meteor.call('users.getTopTracks', (err, res2) => {
           console.log(err);
-          if(!err) {
+          if (!err) {
             Meteor.call('rooms.addSongs', res, res2.items, (err, res) => {
               console.log(err);
-              if(!err) {
+              if (!err) {
                 console.log('victoria!!!');
                 console.log(res);
               }
@@ -40,17 +40,29 @@ class Home extends React.Component{
     });
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <div>
-        <button onClick={() => this.test2()}>Test method</button>
+        <h3>Home</h3>
+        <div>
+          <button onClick={() => FlowRouter.go('join')}>Join</button>
+          <button onClick={() => FlowRouter.go('create')}>Create</button>
+          <button onClick={this.test2}>Test method</button>
+        </div>
+        <h4>Recently joined</h4>
+        <div>
+          {this.props.recent && this.props.recent.map(el =>
+            <RecentBlend key={el._id} blend={el} />
+          )}
+        </div>
       </div>
     );
   }
 }
 
 Home.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  recent: PropTypes.array
 };
 
 export default withTracker(() => {
