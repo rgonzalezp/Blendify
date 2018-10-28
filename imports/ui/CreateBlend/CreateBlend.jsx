@@ -6,7 +6,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 class CreateBlend extends React.Component {
 
-  sumbitBlend(){
+  sumbitBlend(event){
+    event.preventDefault();
     const name = this.nameInput.value;
     const desc = this.descInput.value;
 
@@ -19,7 +20,7 @@ class CreateBlend extends React.Component {
         <h3>
           Create blend
         </h3>
-        <form onSubmit={this.sumbitBlend}>
+        <form onSubmit={() => this.sumbitBlend()}>
           <label>
             Nombre
             <input type="text" maxLength="100" ref={ref => this.nameInput = ref} />

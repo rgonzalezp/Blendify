@@ -11,6 +11,20 @@ html{
   user-select: none; /* Standard */
 }
 
+body, #app{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.app-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
+
 .react-root{
   display: flex;
   width: 100%;
@@ -19,14 +33,15 @@ html{
   align-items: center;
 }
 
-.app-topbar{
+.app-nav{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   background-color: #303030;
   padding: 8px;
   border-bottom: 2px #1ed760 solid;
+  height: 100%;
 }
 
 .title-logo-container{
@@ -45,7 +60,7 @@ html{
 }
 
 .title-logo-container h2{
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   margin: 0px;
   margin-top: -4px;
   margin-left: 8px;
@@ -53,7 +68,27 @@ html{
   color: whitesmoke;
 }
 
+.landing-login-text a{
+  color: whitesmoke;
+  font-size: 1.6rem;
+}
+
+html .app-container .btn {
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border: 2px #1ed760 solid;
+  background: #1ed760;
+  color: whitesmoke;
+  border-radius: 24px;
+  padding: 4px 16px;
+  transition: all 66ms linear;
+}
+
+html .app-container .btn:hover{
+  transform: scale(1.06);
+}
 
 nav img{
-  height: 88px;
+  height: 64px;
 }

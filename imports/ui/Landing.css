@@ -1,0 +1,43 @@
+
+.landing-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(30deg, rgb(43, 75, 36), rgb(15, 15, 15) 85%);
+  color: whitesmoke;
+  padding: 16px;
+}
+
+.landing-title-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.landing-title-container img{
+  min-height: 180px;
+  height: 20vh;
+}
+
+.landing-title-text-container{
+  margin-left: 16px;
+}
+
+.landing-title-text-container h1{
+  font-size: 5rem;
+  margin-left: -4px;
+}
+
+.landing-title-text-container h2{
+  font-size: 2rem;
+}
+
+.landing-login-text{
+  font-size: 1.2rem;
+  font-weight: 600;
+}
