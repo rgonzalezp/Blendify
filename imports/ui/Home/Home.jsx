@@ -20,7 +20,7 @@ class Home extends React.Component{
   }
 
   test2() {
-    Meteor.call('users.createPlaylist', 'mi playlist', 'mi descripción', (err, res) => {/*
+    Meteor.call('users.createPlaylist', 'mi playlist', 'mi descripción', () => {/*
       console.log('probando1');
       console.log(err);
       console.log(res);
@@ -45,6 +45,27 @@ class Home extends React.Component{
           }
         });
       }*/
+    });
+  }
+
+  test3() {
+    Meteor.call('rooms.create', 'prueba', Date.now(), (err, res) => {
+      console.log('probando...');
+      console.log(err);
+      if (!err) {
+        Meteor.call('users.getTopTracks', (err, res2) => {
+          console.log(err);
+          if (!err) {
+            Meteor.call('rooms.addSongs2', res, res2.items, (err, res) => {
+              console.log(err);
+              if (!err) {
+                console.log('victoria!!!');
+                console.log(res);
+              }
+            });
+          }
+        });
+      }
     });
   }
 

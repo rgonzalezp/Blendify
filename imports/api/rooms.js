@@ -59,6 +59,16 @@ Meteor.methods({
       })
       .catch((err) => console.log('yaper prro'));
   },
+  'rooms.addSongs2'(code, songslist) {
+    let user = Meteor.user();
+    if(!user) return new Meteor.Error('Not authorized');
+    let songs = songslist.map(s => {
+      return{song: s, user: user.profile.id};
+    });
+    Rooms.update({code}, {
+      $push: {songs: {$each: songs}}
+    });
+  },
   'rooms.addContributor'(code) {
     if(!Meteor.userId()) return new Meteor.Error('Not authorized');
     Rooms.update({code}, {
