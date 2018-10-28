@@ -56,7 +56,7 @@ class App extends React.Component {
                   <figure 
                     className='nav-user-avatar'
                     title={this.props.user.profile.display_name}
-                    style={{'background-image': `url(${this.props.user.profile.images[0].url})`}}
+                    style={this.props.user.profile.images[0] ? {'background-image': `url(${this.props.user.profile.images[0].url})`} : null}
                   >
                   </figure>
                   <span>{this.props.user.profile.display_name}</span>
