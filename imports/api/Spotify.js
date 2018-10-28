@@ -1,5 +1,8 @@
-/* global Promise */
+/*global process, require, Promise*/
 import axios from 'axios';
+import { Meteor } from 'meteor/meteor';
+const base64 = require('base-64');
+const queryStr = require('querystring');
 
 const Spotify = {};
 
@@ -19,20 +22,72 @@ Spotify.getTopTracks = (access_token, type = 'tracks', limit = 15, time_range = 
       }
     })
       .then(response => resolve(response.data) /*Return the requested data*/)
-      .catch(err => reject(err));
+      .catch(err => {
+        //If access token expired, refresh it and try again        
+        if (err.response.data.error.message === 'The access token expired') {
+          console.log('Access token expired, refreshing access token...');
+          Spotify.refreshAccessToken()
+            //Access token successfully refreshed
+            .then(new_access_token => Spotify.getTopTracks(new_access_token, type, limit, time_range))
+            //Successful retry
+            .then(data => resolve(data))
+            //Error refreshing or retrying
+            .catch(err => { console.log('Error retrying to refresh access token'); reject(err); });
+        }
+        else {
+          reject(err);
+        }
+      });
   });
 };
 
-Spotify.createPlaylist = (access_token, user_id, name, description) => {
+Spotify.refreshAccessToken = (userId=undefined) => {
+  return new Promise( (resolve, reject) => {
+    let rToken = null;
+    if(userId){
+      //TODO Complete for custom userId
+      reject(console.log('[ERROR] NOT IMPLEMENTED FOR CUSTOM ID'));      
+    }
+    else{
+      rToken = Meteor.user().services.spotify.refreshToken;
+    }
+    const body = {
+      grant_type: 'refresh_token',
+      refresh_token: rToken
+    };
+
+    axios.post('https://accounts.spotify.com/api/token', queryStr.stringify(body), {
+      headers:{
+        'content-type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${base64.encode(`0a945853df304e4698a8e4b91e1f41da:${process.env.BLENDIFY_SECRET}`)}`
+      }
+    }).then( response => {
+      Meteor.users.update( { _id: Meteor.user()._id}, { $set : {
+        'services.spotify.accessToken' : response.data.access_token,
+        'services.spotify.scope' : response.data.scope,
+        'services.spotify.expiresAt' : Date.now() + 1000*response.data.scope
+      }});
+      console.log('Access token successfully refreshed.');
+      resolve(response.data.access_token);
+    }).catch( err => {
+      console.log('Error refreshing access token');      
+      reject(err);      
+    });
+  });
+};
+
+Spotify.createPlaylist = (access_token, user_id, name, description) => {  
+  const body = {
+    name,
+    description,
+    public: false,
+    collaborative: true
+  };
   return new Promise((resolve, reject) => {
-    axios.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
-      params: {
-        name,
-        description,
-        public: false,
-        collaborative: true
-      },
+    axios.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, body,{
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`
       }
@@ -49,6 +104,7 @@ Spotify.addTracks = (access_token, playlist_id, uris) => {
         uris,
       },
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`
       }
