@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import './App.css';
+import './Landing.css';
 
 class App extends React.Component {
 
@@ -24,21 +25,37 @@ class App extends React.Component {
   render() {
     return (
       <div className='app-container'>
-        <nav className='app-topbar'>
-          <div className='title-logo-container'>
-            <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
-            <div>
-              <h1>Blendify</h1>
-              <h2>Fast and customizable shared Spotify playlists</h2>
+        {FlowRouter.getRouteName() === 'not-found' && this.props.main}
+        {FlowRouter.getRouteName() !== 'not-found' && (this.props.user ?
+          <span>
+            <nav className='app-nav'>
+              <div className='title-logo-container'>
+                <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
+                <div>
+                  <h1>Blendify</h1>
+                  <h2>Fast and customizable shared Spotify playlists</h2>
+                </div>
+              </div>
+              {this.props.user ?
+                <button onClick={() => Meteor.logout()}>Cerrar sesión</button> :
+                FlowRouter.getRouteName() === 'access' ?
+                  <button onClick={() => FlowRouter.go('home')}>Volver al inicio</button> :
+                  <button onClick={() => this.signIn()}>Iniciar sesión</button>}
+            </nav>
+            {this.props.main}
+          </span>
+          :
+          <div className='landing-container'>
+            <div className='landing-title-container'>
+              <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
+              <div className='landing-title-text-container'>
+                <h1>Blendify</h1>
+                <h2>Fast and customizable shared Spotify playlists</h2>
+                <button className='btn' onClick={() => this.signIn()}>Get started</button>
+              </div>
             </div>
           </div>
-          {this.props.user ?
-            <button onClick={() => Meteor.logout()}>Cerrar sesión</button> :
-            FlowRouter.getRouteName() === 'access' ?
-              <button onClick={() => FlowRouter.go('home')}>Volver al inicio</button> :
-              <button onClick={() => this.signIn()}>Iniciar sesión</button>}
-        </nav>
-        {this.props.main}
+        )}
       </div>
     );
   }

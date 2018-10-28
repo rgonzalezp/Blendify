@@ -46,6 +46,7 @@ FlowRouter.route('/join', {
 });
 
 FlowRouter.notFound = {
+  name: 'not-found',
   action() {
     mount(App, {
       main: <NotFound />

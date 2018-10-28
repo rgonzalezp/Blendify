@@ -13,13 +13,13 @@ class JoinBlend extends React.Component {
     };
   }
 
-  checkCode(){
-    const re = /([A-Z])([A-Z])([1-9])+\w/gi;
+  invalidCode(){
+    const re = /([A-Z])([A-Z])([1-9])([1-9])([1-9])/gi;
     return !re.test(this.state.code);
   }
   
   submitJoin(){
-    
+
   }
 
   render() {
@@ -28,14 +28,17 @@ class JoinBlend extends React.Component {
         <h3>
           Join blend
         </h3>
-        <form onSubmit={this.submitJoin}>
+        <form onSubmit={() => this.submitJoin()}>
           <input
             type="text"
             placeholder="TS443"
+            maxLength={5}
             onChange={event => this.setState({ code: event.target.value })} 
             value={this.state.code} 
           />
-          <button type="submit" disabled={this.checkCode()}>Entrar a la sala</button>
+          {this.invalidCode() && <p>The code must have the format: XX999</p>}
+          <button type="submit" disabled={this.invalidCode()}>Join blend</button>
+          <button onClick={() => FlowRouter.go('home')}>Cancel</button>
         </form>
       </div>
     );
