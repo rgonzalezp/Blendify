@@ -89,7 +89,7 @@ class Home extends React.Component {
             <RecentBlend key={el._id} blend={el} />
           )}
         </div>
-        <button onClick={() => this.test4()}>Test method</button>
+        <button onClick={() => this.test()}>Test method</button>
       </div>
     );
   }

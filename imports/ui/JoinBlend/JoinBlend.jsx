@@ -27,7 +27,7 @@ class JoinBlend extends React.Component {
         return;
       }
       console.log(res);
-      FlowRouter.go(`/blends/${this.state.code}`);
+      FlowRouter.go(`/blend/${this.state.code}`);
     });
   }
 

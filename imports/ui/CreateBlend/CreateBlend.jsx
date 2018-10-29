@@ -23,7 +23,7 @@ class CreateBlend extends React.Component {
           return;
         }
         console.log(res);
-        FlowRouter.go('home');
+        FlowRouter.go(`/blend/${res}`);
       });
     });
   }

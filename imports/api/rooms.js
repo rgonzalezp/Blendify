@@ -58,7 +58,8 @@ Meteor.methods({
     const room = Rooms.findOne({code});
     if(!room) return new Meteor.Error('The room does not exist');
     Spotify.addTracks(user.services.spotify.accessToken, room.id, uris)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         Rooms.update({code}, {
           $push: {tracks: {$each: tracks}}
         });

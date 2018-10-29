@@ -10,8 +10,48 @@ class Blend extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showingContributors: false
+      showingContributors: false,
+      showTracksToAdd: false,
+      tracksToAdd: [],
     };
+  }
+
+  addTracks() {
+    Meteor.call('users.getTopTracks', (err, res) => {
+      if(err) {
+        alert(err);
+        return;
+      }
+      this.setState({showTracksToAdd: true, tracksToAdd: res.items});
+    });
+  }
+
+  deleteTrackToAdd(i) {
+    this.setState({tracksToAdd: this.state.tracksToAdd.filter((t, i2) => {
+      return i !== i2;
+    })});
+  }
+
+  renderTracksToAdd() {
+    return (
+      this.state.showTracksToAdd ?
+        <div className="tracks-to-add">
+          {this.state.tracksToAdd.map((track, i) => 
+            <div key={i}>{track.name} <button onClick={() => this.deleteTrackToAdd(i)}>delete</button></div>
+          )}
+          <button onClick={() => this.submitTracksToAdd()}>add</button>
+        </div> : <button onClick={() => this.addTracks()}>add tracks</button>
+    );
+  }
+
+  submitTracksToAdd() {
+    Meteor.call('rooms.addSongs', this.props.code, this.state.tracksToAdd, (err) => {
+      if(err) {
+        alert(err);
+        return;
+      }
+      this.setState({showTracksToAdd: false});
+    });
   }
 
   getImageSrc(blend) {
