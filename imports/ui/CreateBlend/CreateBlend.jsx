@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import './CreateBlend.css';
 
 class CreateBlend extends React.Component {
 
@@ -30,10 +31,11 @@ class CreateBlend extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='create-container'>
         <h3>
           Create blend
         </h3>
+        <hr/>
         <form onSubmit={(e) => this.sumbitBlend(e)}>
           <label>
             Nombre
@@ -45,8 +47,8 @@ class CreateBlend extends React.Component {
             <textarea cols="40" rows="5" maxLength="300" ref={ref => this.descInput = ref} />
           </label>
           <div>
-            <button onClick={() => FlowRouter.go('home')}>Cancel</button>
-            <button type="submit">Create</button>            
+            <button className='btn black' onClick={() => FlowRouter.go('home')}>Cancel</button>
+            <button className='btn' type="submit">Create</button>            
           </div>
         </form>
       </div>

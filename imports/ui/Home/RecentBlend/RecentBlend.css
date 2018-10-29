@@ -1,0 +1,14 @@
+
+.recent-blend-container{
+  border: 1px #1ed760 solid;
+}
+
+.recent-blend-container .blend-title-image{
+  height: 230px;
+  width: 230px;
+  background-size: cover;
+}
+
+i.blend-title-image{
+  font-size: 220px !important;
+}

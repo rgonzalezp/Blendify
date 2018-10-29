@@ -27,7 +27,7 @@ class App extends React.Component {
       <div className='app-container'>
         {FlowRouter.getRouteName() === 'not-found' && this.props.main}
         {FlowRouter.getRouteName() !== 'not-found' && (this.props.user ?
-          <div>
+          <div style={{height: '100%'}}>
             <nav className='app-nav'>
               <div>
                 <div className='title-logo-container'>
