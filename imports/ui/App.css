@@ -140,6 +140,7 @@ body, #app{
 
 .app-content-container{
   padding-left: calc(250px);
+  min-height: 100vh;
 }
 
 html .app-container .btn {
