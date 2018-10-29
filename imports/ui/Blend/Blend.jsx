@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Rooms } from '../../api/rooms.js';
+import './Blend.css';
 
 class Blend extends Component {
 
@@ -72,39 +73,38 @@ class Blend extends Component {
 
   render() {
     return (this.props.room ?
-      <div className="blend">
+      <div className="blend-container">
         <div className='blend-title-container'>
           {(this.props.room.images && this.props.room.images.length > 0) ||
             (this.props.room.tracks && this.props.room.tracks.length > 0) ?
             <img src={this.getImageSrc(this.props.room)} className='blend-title-image' alt="Playlist image" /> :
             <i className='material-icons blend-title-image'>photo</i>
           }
-          <div className='blent-title-text'>
-            <h3 className="blend-name">{this.props.room.name} ({this.props.room.code})</h3>
+          <div className='blend-title-text'>
+            <h3 className="blend-name">{this.props.room.name}</h3>
             <span>Created by <a href={`/profile/${this.props.room.owner}`}>{this.props.room.owner}</a></span>
+            <span className='code-text'><i className="material-icons">share</i>{this.props.room.code}</span>
             {this.props.room.contributors.length > 1 ?
               <span onClick={() => this.setState({ showingContributors: !this.state.showingContributors })}>
                 {this.state.showingContributors ? 'Hide contributors' : 'Show contributors'}
               </span> :
               <span>No contributors yet</span>}
-            {this.state.showingContributors &&
-              <span>
-                {this.renderContributors()}
-              </span>
-            }
+            {this.state.showingContributors && this.renderContributors()}
           </div>
         </div>
-        {this.props.room.tracks ? this.props.room.tracks.map(track =>
-          <div key={track.track.id}>
-            <div>
-              <p>{track.track.name}</p>
-              {this.renderArtists(track.track)}
+        <div className='track-list-container'>
+          {this.props.room.tracks ? this.props.room.tracks.map(track =>
+            <div className='track-item-container' key={track.track.id}>
+              <div>
+                <p>{track.track.name}</p>
+                {this.renderArtists(track.track)}
+              </div>
+              <div className='track-duration'>{this.parseDuration(track.track.duration_ms)}</div>
             </div>
-            <p>{this.parseDuration(track.track.duration_ms)}</p>
-          </div>
-        ) :
-          <p>There are not songs in the list yet.</p>
-        }
+          ) :
+            <p>There are not songs in the list yet.</p>
+          }
+        </div>
       </div> : null
     );
   }
@@ -112,7 +112,7 @@ class Blend extends Component {
 
   renderContributors() {
     return (
-      <div>
+      <div className='blend-contributors-container'>
         {this.props.room.contributors.map((contr, i) => {
           if (i === this.props.room.contributors.length - 1) { /*Render the last one without ','*/
             return (
@@ -131,7 +131,7 @@ class Blend extends Component {
 
   renderArtists(track) {
     return (
-      <div>
+      <div className='artists-container'>
         {track.artists.map((artist, i) => {
           if (i === track.artists.length - 1) {
             return (
