@@ -1,6 +1,7 @@
 
 .recent-blend-container{
   border: 1px #1ed760 solid;
+  cursor: pointer;
 }
 
 .recent-blend-container .blend-title-image{

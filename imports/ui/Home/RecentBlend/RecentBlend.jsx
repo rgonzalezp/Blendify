@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import './RecentBlend.css';
 
 class RecentBlend extends React.Component{
@@ -16,7 +17,7 @@ class RecentBlend extends React.Component{
 
   render() {
     return (
-      <div className='recent-blend-container'>
+      <div className='recent-blend-container' onClick={() => FlowRouter.go(`/blend/${this.props.blend.code}`)}>
         {(this.props.blend.images && this.props.blend.images.length > 0) ||
           (this.props.blend.tracks && this.props.blend.tracks.length > 0) ?
           <img src={this.getImageSrc(this.props.blend)} className='blend-title-image' alt="Playlist image" /> :

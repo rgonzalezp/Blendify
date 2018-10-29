@@ -67,7 +67,8 @@ class Blend extends Component {
 
   parseDuration(durationMs) {
     const mins = Math.floor(durationMs / 1000 / 60);
-    const secs = Math.ceil((durationMs / 1000 / 60 - mins) * 60);
+    let secs = Math.ceil((durationMs / 1000 / 60 - mins) * 60);
+    if(secs < 10) secs = '0'+secs;
     return `${mins}:${secs}`;
   }
 
@@ -82,7 +83,7 @@ class Blend extends Component {
           }
           <div className='blend-title-text'>
             <h3 className="blend-name">{this.props.room.name}</h3>
-            <span>Created by <a href={`/profile/${this.props.room.owner}`}>{this.props.room.owner}</a></span>
+            <span>Created by <a href={`/profile/${this.props.room.owner.id}`}>{this.props.room.owner.display_name}</a></span>
             <span className='code-text'><i className="material-icons">share</i>{this.props.room.code}</span>
             {this.props.room.contributors.length > 1 ?
               <span onClick={() => this.setState({ showingContributors: !this.state.showingContributors })}>
@@ -105,6 +106,7 @@ class Blend extends Component {
             <p>There are not songs in the list yet.</p>
           }
         </div>
+        {this.renderTracksToAdd()}
       </div> : null
     );
   }
