@@ -33,7 +33,7 @@ class App extends React.Component {
                 <div className='title-logo-container'>
                   <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
                   <div>
-                    <h1>Blendify</h1>
+                    <h1 onClick={() => FlowRouter.go('home')}>Blendify</h1>
                   </div>
                 </div>
                 <a className={FlowRouter.getRouteName() === 'home' ? 'nav-item selected' : 'nav-item'} href='/'>
