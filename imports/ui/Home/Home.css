@@ -6,7 +6,7 @@
   height: 100%;
   padding: 20px 32px;
   margin: 0 auto;
-  min-width: 80vw;
+  width: 100%;
   max-width: 1080px;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .home-container hr{
-  border-color: whitesmoke;
+  border-color: rgba(245, 245, 245, 0.6);
   width: 100%;
   margin: 0;
   margin-bottom: 4px;
