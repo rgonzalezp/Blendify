@@ -46,8 +46,8 @@ FlowRouter.route('/join', {
   },
 });
 
-FlowRouter.route('/blends/:id', {
-  name: 'blends',
+FlowRouter.route('/blend/:id', {
+  name: 'blend',
   action(params) {
     mount(App, {
       main: <Blend code={params.id}/>

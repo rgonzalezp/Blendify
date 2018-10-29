@@ -15,16 +15,18 @@ class Blend extends Component {
   }
 
   getImageSrc(blend) {
-    for (const image of blend.images) {
-      return image.url;
+    if (blend.images) {
+      for (const image of blend.images) {
+        return image.url;
+      }
     }
     //If the playlist has not been assigned a list of images, get the album image of the first song
     return blend.tracks[0].track.album.images[1].url;
   }
 
-  parseDuration(durationMs){
-    const mins = Math.floor(durationMs/1000/60);
-    const secs = Math.ceil((durationMs/1000/60 - mins)*60);
+  parseDuration(durationMs) {
+    const mins = Math.floor(durationMs / 1000 / 60);
+    const secs = Math.ceil((durationMs / 1000 / 60 - mins) * 60);
     return `${mins}:${secs}`;
   }
 
@@ -39,10 +41,12 @@ class Blend extends Component {
           }
           <div className='blent-title-text'>
             <h3 className="blend-name">{this.props.room.name} ({this.props.room.code})</h3>
-            <span>Created by <a href={`/profile/${this.props.room.owner}`}></a></span>
-            <span onClick={() => this.setState({ showingContributors : !this.state.showingContributors })}>
-              {this.state.showingContributors ? 'Hide contributors' : 'Show contributors'}
-            </span>
+            <span>Created by <a href={`/profile/${this.props.room.owner}`}>{this.props.room.owner}</a></span>
+            {this.props.room.contributors.length > 1 ?
+              <span onClick={() => this.setState({ showingContributors: !this.state.showingContributors })}>
+                {this.state.showingContributors ? 'Hide contributors' : 'Show contributors'}
+              </span> :
+              <span>No contributors yet</span>}
             {this.state.showingContributors &&
               <span>
                 {this.renderContributors()}
@@ -50,13 +54,13 @@ class Blend extends Component {
             }
           </div>
         </div>
-        {this.props.room.tracks ? this.props.room.tracks.map( element => 
-          <div key={element.track.id}>
+        {this.props.room.tracks ? this.props.room.tracks.map(track =>
+          <div key={track.track.id}>
             <div>
-              <p>{element.name}</p>
-
-            </div>            
-            <p>{this.parseDuration(element.track.duration_ms)}</p>
+              <p>{track.track.name}</p>
+              {this.renderArtists(track.track)}
+            </div>
+            <p>{this.parseDuration(track.track.duration_ms)}</p>
           </div>
         ) :
           <p>There are not songs in the list yet.</p>
@@ -65,19 +69,19 @@ class Blend extends Component {
     );
   }
 
-  
+
   renderContributors() {
     return (
       <div>
-        {this.props.room.contributors.map((item, i) => {
-          if(i === this.props.room.contributors.length - 1){ /*Render the last one without ','*/
+        {this.props.room.contributors.map((contr, i) => {
+          if (i === this.props.room.contributors.length - 1) { /*Render the last one without ','*/
             return (
-              <div key={item.display_name}><a href={`profile/${item.display_name}`}>{item.display_name}</a>.</div>
+              <div key={contr.display_name}><a href={`profile/${contr.display_name}`}>{contr.display_name}</a>.</div>
             );
           }
           if (i !== 0) { /*Do not render first contributor (owner)*/
             return (
-              <div key={item.display_name}><a href={`profile/${item.display_name}`}>{item.display_name}</a>, </div>
+              <div key={contr.display_name}><a href={`profile/${contr.display_name}`}>{contr.display_name}</a>, </div>
             );
           }
         })}
@@ -85,9 +89,24 @@ class Blend extends Component {
     );
   }
 
-  renderArtists(){
-    return(
+  renderArtists(track) {
+    return (
+      <div>
+        {track.artists.map((artist, i) => {
+          if (i === track.artists.length - 1) {
+            return (
+              <div key={artist.id}>
+                <a href={`https://open.spotify.com/artist/${artist.id}`}>{artist.name}</a>
+              </div>
+            );
+          }
 
+          return (
+            <div key={artist.id}>
+              <a href={`https://open.spotify.com/artist/${artist.id}`}>{artist.name}</a>, </div>
+          );
+        })}
+      </div>
     );
   }
 

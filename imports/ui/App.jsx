@@ -27,7 +27,7 @@ class App extends React.Component {
       <div className='app-container'>
         {FlowRouter.getRouteName() === 'not-found' && this.props.main}
         {FlowRouter.getRouteName() !== 'not-found' && (this.props.user ?
-          <span>
+          <div>
             <nav className='app-nav'>
               <div>
                 <div className='title-logo-container'>
@@ -56,7 +56,7 @@ class App extends React.Component {
                       <figure
                         className='nav-user-avatar'
                         title={this.props.user.profile.display_name}
-                        style={{ 'background-image': `url(${this.props.user.profile.images[0].url})` }}
+                        style={{ backgroundImage: `url(${this.props.user.profile.images[0].url})` }}
                       >
                       </figure> :
                       <i className='nav-user-avatar' title={this.props.user.profile.display_name}>
@@ -67,8 +67,10 @@ class App extends React.Component {
                   <button className='btn black' onClick={() => Meteor.logout()}>Cerrar sesión</button>
                 </div>}
             </nav>
-            {this.props.main}
-          </span>
+            <div className='app-content-container'>
+              {this.props.main}
+            </div>
+          </div>
           :
           <div className='landing-container'>
             <div className='landing-title-container'>
