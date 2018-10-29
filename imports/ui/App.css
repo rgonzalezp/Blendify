@@ -26,6 +26,7 @@ body, #app{
   width: 100%;
   background: linear-gradient(rgb(42, 49, 40), rgb(15, 15, 15) 85%);
   color: whitesmoke;
+  font-weight: 600;
 }
 
 .react-root{
@@ -40,7 +41,7 @@ body, #app{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   background-color: #151515;
   padding: 24px;
   border-right: 2px #1ed760 solid;
@@ -76,6 +77,10 @@ body, #app{
   transition: all 0.2s linear;
 }
 
+.selected{
+  color: #1ed760;
+}
+
 .nav-item:hover{
   color: whitesmoke;
   text-decoration: none;
@@ -104,13 +109,28 @@ body, #app{
   justify-content: flex-start;
   align-items: center;
   cursor: default;
+  margin-bottom: 16px;
+  color: whitesmoke
+}
+
+.nav-user-link span{
+  margin-left: 8px;
+  transition: all 0.14s ease-in-out;
+}
+
+.nav-user-link:hover{
+  text-decoration: none;
+  cursor: pointer;
+  color: #66f598;
 }
 
 .nav-user-avatar{
   height: 28px;
   width: 28px;
   border-radius: 50%;
+  color: whitesmoke;
   background-size: cover;
+  margin: 0;
 }
 
 html .app-container .btn {
@@ -123,6 +143,12 @@ html .app-container .btn {
   border-radius: 24px;
   padding: 4px 16px;
   transition: all 66ms linear;
+}
+
+html .app-container .btn.black{
+  border: 2px whitesmoke solid;
+  background: #070707;
+  color: whitesmoke;
 }
 
 html .app-container .btn:hover{
