@@ -5,6 +5,7 @@ import App from '../imports/ui/App.jsx';
 import Home from '../imports/ui/Home/Home.jsx';
 import CreateBlend from '../imports/ui/CreateBlend/CreateBlend.jsx';
 import JoinBlend from '../imports/ui/JoinBlend/JoinBlend.jsx';
+import Blend from '../imports/ui/Blend/Blend.jsx';
 import NotFound from '../imports/ui/NotFound/NotFound.jsx';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -41,6 +42,15 @@ FlowRouter.route('/join', {
   action() {
     mount(App, {
       main: <JoinBlend />,
+    });
+  },
+});
+
+FlowRouter.route('/blends/:id', {
+  name: 'blends',
+  action(params) {
+    mount(App, {
+      main: <Blend code={params.id}/>
     });
   },
 });

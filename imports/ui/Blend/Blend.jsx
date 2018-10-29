@@ -87,7 +87,7 @@ class Blend extends Component {
 
   renderArtists(){
     return(
-      
+
     );
   }
 
