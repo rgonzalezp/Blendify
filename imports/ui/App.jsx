@@ -9,7 +9,7 @@ import './Landing.css';
 class App extends React.Component {
 
   constructor(props) {
-    super(props); 
+    super(props);
   }
 
   signIn() {
@@ -36,33 +36,36 @@ class App extends React.Component {
                     <h1>Blendify</h1>
                   </div>
                 </div>
-                <a className='nav-item' href='/'>
+                <a className={FlowRouter.getRouteName() === 'home' ? 'nav-item selected' : 'nav-item'} href='/'>
                   <i className='material-icons'>home</i>
                   <span className='nav-item-text'>Home</span>
                 </a>
-                <a className='nav-item' href='/create'>
+                <a className={FlowRouter.getRouteName() === 'create' ? 'nav-item selected' : 'nav-item'} href='/create'>
                   <i className='material-icons'>playlist_add</i>
                   <span className='nav-item-text'>Create Blend</span>
                 </a>
-                <a className='nav-item' href='/join'>
+                <a className={FlowRouter.getRouteName() === 'join' ? 'nav-item selected' : 'nav-item'} href='/join'>
                   <i className='material-icons'>how_to_vote</i>
                   <span className='nav-item-text'>Join Blend</span>
                 </a>
               </div>
-              {this.props.user && 
-              <div className='nav-bottom-container'>
-                
-                <a href={`/profile/${this.props.user.profile.id}`} className='nav-user-link'>
-                  <figure 
-                    className='nav-user-avatar'
-                    title={this.props.user.profile.display_name}
-                    style={this.props.user.profile.images[0] ? {'background-image': `url(${this.props.user.profile.images[0].url})`} : null}
-                  >
-                  </figure>
-                  <span>{this.props.user.profile.display_name}</span>
-                </a>
-                <button onClick={() => Meteor.logout()}>Cerrar sesión</button>
-              </div>}
+              {this.props.user &&
+                <div className='nav-bottom-container'>
+                  <a href={`/profile/${this.props.user.profile.id}`} className='nav-user-link'>
+                    {this.props.user.profile.images[0] ?
+                      <figure
+                        className='nav-user-avatar'
+                        title={this.props.user.profile.display_name}
+                        style={{ 'background-image': `url(${this.props.user.profile.images[0].url})` }}
+                      >
+                      </figure> :
+                      <i className='nav-user-avatar' title={this.props.user.profile.display_name}>
+                        account_box
+                      </i>}
+                    <span>{this.props.user.profile.display_name}</span>
+                  </a>
+                  <button className='btn black' onClick={() => Meteor.logout()}>Cerrar sesión</button>
+                </div>}
             </nav>
             {this.props.main}
           </span>
