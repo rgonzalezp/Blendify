@@ -6,6 +6,7 @@ import Home from '../imports/ui/Home/Home.jsx';
 import CreateBlend from '../imports/ui/CreateBlend/CreateBlend.jsx';
 import JoinBlend from '../imports/ui/JoinBlend/JoinBlend.jsx';
 import Blend from '../imports/ui/Blend/Blend.jsx';
+import Profile from '../imports/ui/Profile/Profile.jsx';
 import NotFound from '../imports/ui/NotFound/NotFound.jsx';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -51,6 +52,15 @@ FlowRouter.route('/blend/:id', {
   action(params) {
     mount(App, {
       main: <Blend code={params.id}/>
+    });
+  },
+});
+
+FlowRouter.route('/profile/:id', {
+  name: 'profile',
+  action(params) {
+    mount(App, {
+      main: <Profile id={params.id} />
     });
   },
 });

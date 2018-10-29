@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import Spotify from './Spotify';
 
 if (Meteor.isServer) {
-  Meteor.publish('users', username => {
-    return Meteor.users.find({ 'profile.id': username }, { profile: 1 });
+  Meteor.publish('users', id => {
+    return Meteor.users.find({ 'profile.id': id }, { profile: 1 });
   });
 }
 
