@@ -108,10 +108,8 @@ export default withTracker(() => {
   const user = Meteor.user();
   if(user)
     Meteor.subscribe('rooms', user.profile.id);
-  const a = Rooms.find({}, {sort: {timestamp:-1}, limit: 5}).fetch();
-  console.log(a);
   return {
     user,
-    recent: a,
+    recent: Rooms.find({}, {sort: {timestamp:-1}, limit: 5}).fetch()
   };
 })(Home);
