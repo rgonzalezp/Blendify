@@ -73,7 +73,7 @@ class Home extends React.Component {
   }
 
   test4() {
-    Meteor.call('rooms.autoUpdateImageCover', 'MS659', () => {
+    Meteor.call('rooms.autoUpdateImageCover', 'XB359', () => {
 
     });
   }
@@ -89,7 +89,7 @@ class Home extends React.Component {
             <RecentBlend key={el._id} blend={el} />
           )}
         </div>
-        <button onClick={() => this.test()}>Test method</button>
+        <button onClick={() => this.test4()}>Test method</button>
       </div>
     );
   }

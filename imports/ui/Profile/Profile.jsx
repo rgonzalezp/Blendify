@@ -8,7 +8,7 @@ import RecentBlend from '../Home/RecentBlend/RecentBlend.jsx';
 class Profile extends Component {
   renderHistory() {
     return this.props.history.map((blend, i) =>
-      <RecentBlend key={i} />
+      <RecentBlend key={i} blend={blend}/>
     );
   }
   
@@ -17,17 +17,17 @@ class Profile extends Component {
       this.props.user ?
         <div className="profile">
           <h2>User profile</h2>
-          {this.props.user.profile.images[0] ?
+          {this.props.user.images[0] ?
             <figure
               className='nav-user-avatar'
-              title={this.props.user.profile.display_name}
-              style={{ backgroundImage: `url(${this.props.user.profile.images[0].url})` }}
+              title={this.props.user.display_name}
+              style={{ backgroundImage: `url(${this.props.user.images[0].url})` }}
             >
             </figure> :
-            <i className='nav-user-avatar' title={this.props.user.profile.display_name}>
+            <i className='nav-user-avatar' title={this.props.user.display_name}>
               account_box
             </i>}
-          <span>{this.props.user.profile.display_name}</span>
+          <span>{this.props.user.display_name}</span>
           <h3>history</h3>
           {this.renderHistory()}
         </div> : null
@@ -45,10 +45,8 @@ export default withTracker((props) => {
   Meteor.subscribe('users', props.id);
   Meteor.subscribe('rooms', props.id);
   const user = Meteor.users.findOne({});
-  console.log('aa');
-  console.log(user);
   return {
     user: user ? user.profile : undefined,
-    history: Rooms.find({}).fetch(),
+    history: Rooms.find({}, {sort: {timestamp: -1 }}).fetch(),
   };
 })(Profile);

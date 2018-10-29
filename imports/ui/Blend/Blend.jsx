@@ -22,6 +22,7 @@ class Blend extends Component {
         alert(err);
         return;
       }
+      Meteor.call('rooms.autoUpdateImageCover', this.props.code);
       this.setState({showTracksToAdd: true, tracksToAdd: res.items});
     });
   }
