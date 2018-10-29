@@ -14,7 +14,7 @@ class JoinBlend extends React.Component {
   }
 
   invalidCode(){
-    const re = /([A-Z])([A-Z])([1-9])([1-9])([1-9])/gi;
+    const re = /([A-Z])([A-Z])([0-9])([0-9])([0-9])/gi;
     return !re.test(this.state.code);
   }
   
@@ -27,6 +27,7 @@ class JoinBlend extends React.Component {
         return;
       }
       console.log(res);
+      FlowRouter.go(`/blends/${this.state.code}`);
     });
   }
 

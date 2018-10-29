@@ -9,32 +9,43 @@ class Blend extends Component {
   renderContributors() {
     return (
       <div className="blend-contributors">
-        <ul>
-          {this.props.room.contributors.map((c, i) => 
-            <li key={i}>{c.display_name}</li>
-          )}
-        </ul>
+        {this.props.room.contributors.slice(1).map((c, i) => 
+          <p key={i}>{c.display_name}</p>
+        )}
       </div>
     );
   }
 
   renderTracks() {
-    <div className="blend-tracks">
-      {this.props.tracks.map(t => 
-        <div>
-          
-        </div>
-      )}
-    </div>
+    return (
+      <div className="blend-tracks">
+        {this.props.room.tracks.map((t, i) => 
+          <div className="single-track" key={i}>
+            <p>{t.track.name}</p>
+            <p className="track-artists">
+              {t.track.artists.map((a, i) => 
+                <span key={i}> {i!==0 && ' -'} {a.name}</span>
+              )}
+            </p>
+            <p>added by {t.user.display_name}</p>
+          </div>
+        )}
+      </div>
+    );
   }
 
   render() {
-    return (this.props.room ?
+    return (this.props.room ? (
       <div className="blend">
         <h2 className="blend-name">{this.props.room.name} ({this.props.room.code})</h2>
+        <h3>Owner</h3>
+        <p>{this.props.room.owner.display_name}</p>
+        <h3>Contributors</h3>
         {this.renderContributors()}
-
-      </div> : null
+        <h3>Tracks</h3>
+        {this.renderTracks()}
+      </div>
+    ) : null
     );
   }
 }
