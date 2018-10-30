@@ -24,7 +24,7 @@ class Profile extends Component {
               style={{ backgroundImage: `url(${this.props.user.images[0].url})` }}
             >
             </figure> :
-            <i className='nav-user-avatar' title={this.props.user.display_name}>
+            <i className='material-icons nav-user-avatar' title={this.props.user.display_name}>
               account_box
             </i>}
           <span>{this.props.user.display_name}</span>

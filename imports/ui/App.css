@@ -141,7 +141,7 @@ body, #app{
 .app-content-container{
   padding-left: 250px;
   min-height: 100vh;
-  width: calc(100vw - 18px ); /*Remove scrollbar thickness*/
+  width: calc(100vw - 20px ); /*Remove scrollbar thickness*/
 }
 
 html .app-container .btn {
