@@ -139,8 +139,9 @@ body, #app{
 }
 
 .app-content-container{
-  padding-left: calc(250px);
+  padding-left: 250px;
   min-height: 100vh;
+  width: calc(100vw - 18px ); /*Remove scrollbar thickness*/
 }
 
 html .app-container .btn {
@@ -149,7 +150,7 @@ html .app-container .btn {
   font-weight: 600;
   border: 2px #1ed760 solid;
   background: #1ed760;
-  color: whitesmoke;
+  color: #ffffff;
   border-radius: 24px;
   padding: 4px 16px;
   transition: all 66ms linear;
@@ -159,6 +160,17 @@ html .app-container .btn.black{
   border: 2px whitesmoke solid;
   background: #070707;
   color: whitesmoke;
+}
+
+html .app-container .btn.white{
+  border: 2px transparent solid;
+  background: #fff;
+  color: black;
+}
+
+html .app-content-container .btn.small{
+  font-size: 1rem;
+  padding: 2px 12px
 }
 
 html .app-container .btn:hover{

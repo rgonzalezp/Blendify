@@ -23,7 +23,7 @@
   height: 230px;
   width: 230px;
   background-size: cover;
-  font-size: 220px;
+  font-size: 230px;
 }
 
 .blend-title-text{
@@ -97,6 +97,37 @@
 
 .track-item-container a:hover{
   color: whitesmoke;
+}
+
+.add-tracks-container{
+  width: 100%;
+}
+
+.add-track-item{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.add-track-item i.remove-track{
+  cursor: pointer;
+  color: #eb5858;
+  margin: 0 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-track-item i.remove-track:hover{
+  text-shadow: 0 0 4px #ff9000;
+  transform: scale(1.01);
+}
+
+.add-tracks-btn-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 33%;
+  margin-top: 16px;
 }
 
 .track-duration{

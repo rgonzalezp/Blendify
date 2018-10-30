@@ -12,72 +12,6 @@ class Home extends React.Component {
     super(props);
   }
 
-  test() {
-    Meteor.call('users.getTopTracks', (err, res) => {
-      console.log('probando...');
-      console.log(err);
-      if (!err) console.log(res.items);
-
-    });
-  }
-
-  test2() {
-    Meteor.call('users.createPlaylist', 'mi playlist 5', 'mi descripción 5', (err, res) => {
-      console.log('a');
-      console.log(err);
-      console.log(res);
-
-      if (!err) {
-        console.log('yessss');
-        Meteor.call('rooms.create', res, (err, res) => {
-          console.log('probando...');
-          console.log(err);
-          if (!err) {
-            Meteor.call('users.getTopTracks', (err, res2) => {
-              console.log(err);
-              if (!err) {
-                Meteor.call('rooms.addSongs', res, res2.items, (err, res) => {
-                  console.log(err);
-                  if (!err) {
-                    console.log('victoria!!!');
-                    console.log(res);
-                  }
-                });
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-
-  test3() {
-    Meteor.call('rooms.create', 'prueba', Date.now(), (err, res) => {
-      console.log('probando...');
-      console.log(err);
-      if (!err) {
-        Meteor.call('users.getTopTracks', (err, res2) => {
-          console.log(err);
-          if (!err) {
-            Meteor.call('rooms.addSongs2', res, res2.items, (err, res) => {
-              console.log(err);
-              if (!err) {
-                console.log('victoria!!!');
-                console.log(res);
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-
-  test4() {
-    Meteor.call('rooms.autoUpdateImageCover', 'XB359', () => {
-
-    });
-  }
-
   render() {
     return (
       <div className='home-container'>
@@ -89,7 +23,6 @@ class Home extends React.Component {
             <RecentBlend key={el._id} blend={el} />
           )}
         </div>
-        <button onClick={() => this.test4()}>Test method</button>
       </div>
     );
   }

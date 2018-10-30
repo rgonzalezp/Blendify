@@ -17,41 +17,38 @@ class Blend extends Component {
   }
 
   addTracks() {
-    Meteor.call('users.getTopTracks', (err, res) => {
-      if(err) {
-        alert(err);
-        return;
-      }
-      Meteor.call('rooms.autoUpdateImageCover', this.props.code);
-      this.setState({showTracksToAdd: true, tracksToAdd: res.items});
-    });
+    //If tracks havent been requested
+    if (this.state.tracksToAdd.length === 0) {
+      Meteor.call('users.getTopTracks', (err, res) => {
+        if (err) {
+          alert(err);
+          return;
+        }
+        Meteor.call('rooms.autoUpdateImageCover', this.props.code);
+        this.setState({ showTracksToAdd: true, tracksToAdd: res.items });
+      });
+    }
+    //Tracks have already been fetched, do not call API
+    else {
+      this.setState({ showTracksToAdd: true });
+    }
   }
 
   deleteTrackToAdd(i) {
-    this.setState({tracksToAdd: this.state.tracksToAdd.filter((t, i2) => {
-      return i !== i2;
-    })});
-  }
-
-  renderTracksToAdd() {
-    return (
-      this.state.showTracksToAdd ?
-        <div className="tracks-to-add">
-          {this.state.tracksToAdd.map((track, i) => 
-            <div key={i}>{track.name} <button onClick={() => this.deleteTrackToAdd(i)}>delete</button></div>
-          )}
-          <button onClick={() => this.submitTracksToAdd()}>add</button>
-        </div> : <button onClick={() => this.addTracks()}>add tracks</button>
-    );
+    this.setState({
+      tracksToAdd: this.state.tracksToAdd.filter((t, i2) => {
+        return i !== i2;
+      })
+    });
   }
 
   submitTracksToAdd() {
     Meteor.call('rooms.addSongs', this.props.code, this.state.tracksToAdd, (err) => {
-      if(err) {
+      if (err) {
         alert(err);
         return;
       }
-      this.setState({showTracksToAdd: false});
+      this.setState({ showTracksToAdd: false });
     });
   }
 
@@ -68,7 +65,7 @@ class Blend extends Component {
   parseDuration(durationMs) {
     const mins = Math.floor(durationMs / 1000 / 60);
     let secs = Math.ceil((durationMs / 1000 / 60 - mins) * 60);
-    if(secs < 10) secs = '0'+secs;
+    if (secs < 10) secs = '0' + secs;
     return `${mins}:${secs}`;
   }
 
@@ -91,22 +88,45 @@ class Blend extends Component {
               </span> :
               <span>No contributors yet</span>}
             {this.state.showingContributors && this.renderContributors()}
+            {!this.state.showTracksToAdd && <button onClick={() => this.addTracks()} className='btn white small'>add tracks</button>}
           </div>
         </div>
         <div className='track-list-container'>
-          {this.props.room.tracks ? this.props.room.tracks.map(track =>
-            <div className='track-item-container' key={track.track.id}>
-              <div>
-                <p>{track.track.name}</p>
-                {this.renderArtists(track.track)}
+
+          {this.state.showTracksToAdd &&
+            <div className='add-tracks-container'>
+              {this.state.tracksToAdd.map((track, i) =>
+                <div className='track-item-container' key={track.id}>
+                  <div className='add-track-item'>
+                    <i className='material-icons remove-track' tabIndex='0' onClick={() => this.deleteTrackToAdd(i)}>clear</i>
+                    <div>
+                      <p>{i + 1}. {track.name}</p>
+                      {this.renderArtists(track)}
+                    </div>
+                  </div>
+                  <div className='track-duration'>{this.parseDuration(track.duration_ms)}</div>
+                </div>
+              )}
+              <div className='add-tracks-btn-container'>
+                <button className='btn' onClick={() => this.submitTracksToAdd()}>Add tracks</button>
+                <button className='btn black' onClick={() => this.setState({ showTracksToAdd: false })}>Cancel</button>
               </div>
-              <div className='track-duration'>{this.parseDuration(track.track.duration_ms)}</div>
-            </div>
-          ) :
-            <p>There are not songs in the list yet.</p>
+            </div>}
+
+          {!this.state.showTracksToAdd && /*Do not show when addding tracks*/
+            (this.props.room.tracks && this.props.room.tracks.length > 0 ?
+              this.props.room.tracks.map(track =>
+                <div className='track-item-container' key={track.track.id}>
+                  <div>
+                    <p>{track.track.name}</p>
+                    {this.renderArtists(track.track)}
+                  </div>
+                  <div className='track-duration'>{this.parseDuration(track.track.duration_ms)}</div>
+                </div>
+              ) :
+              <p>There are not songs in the list yet.</p>)
           }
         </div>
-        {this.renderTracksToAdd()}
       </div> : null
     );
   }
