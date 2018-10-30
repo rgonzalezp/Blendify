@@ -1,5 +1,4 @@
 import React from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 import './NotFound.css';
 
 class NotFound extends React.Component{

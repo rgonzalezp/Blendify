@@ -59,7 +59,7 @@ class App extends React.Component {
                         style={{ backgroundImage: `url(${this.props.user.profile.images[0].url})` }}
                       >
                       </figure> :
-                      <i className='nav-user-avatar' title={this.props.user.profile.display_name}>
+                      <i className='nav-user-avatar material-icons' title={this.props.user.profile.display_name}>
                         account_box
                       </i>}
                     <span>{this.props.user.profile.display_name}</span>
