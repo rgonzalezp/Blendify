@@ -64,7 +64,7 @@ class App extends React.Component {
                       </i>}
                     <span>{this.props.user.profile.display_name}</span>
                   </a>
-                  <button className='btn black' onClick={() => Meteor.logout()}>Cerrar sesión</button>
+                  <button className='btn black' onClick={() => Meteor.logout()}>Log out</button>
                 </div>}
             </nav>
             <div className='app-content-container' role='main'>
