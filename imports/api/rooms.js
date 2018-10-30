@@ -57,7 +57,8 @@ Meteor.methods({
     });
     const room = Rooms.findOne({code});
     if(!room) return new Meteor.Error('The room does not exist');
-    Spotify.addTracks(user.services.spotify.accessToken, room.id, uris)
+    const owner = Meteor.users.findOne({'profile.id': room.owner.id})
+    Spotify.addTracks(owner.services.spotify.accessToken, room.id, uris)
       .then((res) => {
         console.log(res);
         Rooms.update({code}, {
@@ -93,7 +94,8 @@ Meteor.methods({
     const user = Meteor.user();
     const room = Rooms.findOne({code, 'contributors.id': user.profile.id});
     if(!room) return new Meteor.Error('Not authorized');
-    Spotify.getPlaylist(user.services.spotify.accessToken, room.id)
+    const owner = Meteor.users.findOne({'profile.id': room.owner.id})
+    Spotify.getPlaylist(owner.services.spotify.accessToken, room.id)
       .then(res => {
         Rooms.update({code}, {$set: {images: res.images}});
       })
