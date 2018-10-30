@@ -34,7 +34,7 @@ class CreateBlend extends React.Component {
           Create blend
         </h3>
         <hr/>
-        <form onSubmit={(e) => this.sumbitBlend(e)}>
+        <form onSubmit={(e) => this.sumbitBlend(e)} role='form'>
           <label>
             Nombre
             <input type="text" maxLength="100" ref={ref => this.nameInput = ref} />

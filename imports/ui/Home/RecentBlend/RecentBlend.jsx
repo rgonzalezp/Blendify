@@ -17,7 +17,7 @@ class RecentBlend extends React.Component{
 
   render() {
     return (
-      <div className='recent-blend-container' onClick={() => FlowRouter.go(`/blend/${this.props.blend.code}`)}>
+      <div tabIndex='0' aria-label='go to blend' title='go to blend' className='recent-blend-container' onClick={() => FlowRouter.go(`/blend/${this.props.blend.code}`)}>
         {(this.props.blend.images && this.props.blend.images.length > 0) ||
           (this.props.blend.tracks && this.props.blend.tracks.length > 0) ?
           <img src={this.getImageSrc(this.props.blend)} className='blend-title-image' alt="Playlist image" /> :

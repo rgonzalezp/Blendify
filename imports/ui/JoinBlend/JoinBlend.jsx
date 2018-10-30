@@ -25,7 +25,6 @@ class JoinBlend extends React.Component {
         alert(err);
         return;
       }
-      console.log(res);
       FlowRouter.go(`/blend/${this.state.code}`);
     });
   }
@@ -37,7 +36,7 @@ class JoinBlend extends React.Component {
           Join blend
         </h3>
         <hr />
-        <form onSubmit={(e) => this.submitJoin(e)}>
+        <form onSubmit={(e) => this.submitJoin(e)} role='form'>
           <input
             type="text"
             placeholder="TS443"
@@ -47,8 +46,8 @@ class JoinBlend extends React.Component {
           />
           {this.invalidCode() && <p role='alert'>The code must have the format: XX999</p>}
           <div>
-            <button className='btn' type="submit" disabled={this.invalidCode()}>Join blend</button>
-            <button className='btn black' onClick={() => FlowRouter.go('home')}>Cancel</button>
+            <button aria-label="Join Blend" className='btn' type="submit" disabled={this.invalidCode()}>Join blend</button>
+            <button aria-label="Cancel" className='btn black' onClick={() => FlowRouter.go('home')}>Cancel</button>
           </div>
         </form>
       </div>

@@ -28,10 +28,10 @@ class App extends React.Component {
         {FlowRouter.getRouteName() === 'not-found' && this.props.main}
         {FlowRouter.getRouteName() !== 'not-found' && (this.props.user ?
           <div style={{height: '100%'}}>
-            <nav className='app-nav'>
+            <nav className='app-nav' role='navigation'>
               <div>
                 <div className='title-logo-container'>
-                  <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
+                  <a href='/'><img src="/assets/logo.png" alt="Blendify Logo"/></a>
                   <div>
                     <h1 onClick={() => FlowRouter.go('home')}>Blendify</h1>
                   </div>
@@ -67,18 +67,18 @@ class App extends React.Component {
                   <button className='btn black' onClick={() => Meteor.logout()}>Cerrar sesión</button>
                 </div>}
             </nav>
-            <div className='app-content-container'>
+            <div className='app-content-container' role='main'>
               {this.props.main}
             </div>
           </div>
           :
           <div className='landing-container'>
-            <div className='landing-title-container'>
+            <div className='landing-title-container' role='main'>
               <a href='/'><img src="/assets/logo.png" alt="Logo" /></a>
               <div className='landing-title-text-container'>
                 <h1>Blendify</h1>
                 <h2>Fast and customizable shared Spotify playlists</h2>
-                <button className='btn' onClick={() => this.signIn()}>Get started</button>
+                <button aria-label='Get started' className='btn' onClick={() => this.signIn()}>Get started</button>
               </div>
             </div>
           </div>
